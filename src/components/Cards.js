@@ -11,13 +11,19 @@ function Cards() {
             <ul className="cards__items">
             <CardItem
               src='https://media-cldnry.s-nbcnews.com/image/upload/t_fit-760w,f_auto,q_auto:best/rockcms/2023-06/Grimace-mcdonalds-mc-230608-731819.jpg'
-              text='Generic News Comment'
+              text='Terror Grimace Strikes Once'
               label='Grimace'
               path='/services'
             />
             <CardItem
               src='https://media-cldnry.s-nbcnews.com/image/upload/t_fit-760w,f_auto,q_auto:best/rockcms/2023-06/Grimace-mcdonalds-mc-230608-731819.jpg'
-              text='Grimace Strikes Again'
+              text='Terror Grimace Strikes Twice'
+              label='Grimace'
+              path='/services'
+            />
+            <CardItem
+              src='https://media-cldnry.s-nbcnews.com/image/upload/t_fit-760w,f_auto,q_auto:best/rockcms/2023-06/Grimace-mcdonalds-mc-230608-731819.jpg'
+              text='Terror Grimace Strikes Once'
               label='Grimace'
               path='/services'
             />

@@ -44,7 +44,7 @@ function Navbar() {
             </li>
             <li className='nav-item'>
               <Link
-                to='/services'
+                to='/boards-and-commissions'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
@@ -53,7 +53,7 @@ function Navbar() {
             </li>
             <li className='nav-item'>
               <Link
-                to='/products'
+                to='/departments'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
@@ -63,7 +63,7 @@ function Navbar() {
 
             <li className='nav-item'>
               <Link
-                to='/products'
+                to='/community'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
@@ -73,7 +73,7 @@ function Navbar() {
 
             <li className='nav-item'>
               <Link
-                to='/products'
+                to='/business'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
@@ -83,7 +83,7 @@ function Navbar() {
 
             <li className='nav-item'>
               <Link
-                to='/products'
+                to='/visit-us'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
@@ -93,7 +93,7 @@ function Navbar() {
 
             <li>
               <Link
-                to='/sign-up'
+                to='/log-in'
                 className='nav-links-mobile'
                 onClick={closeMobileMenu}
               >
