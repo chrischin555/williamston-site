@@ -1,10 +1,4 @@
-video {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    z-index: -1;
-  }
+
   
   .hero-container {
     background: url('/public/images/City Hall Sign.JPG') center center/cover no-repeat;
@@ -17,6 +11,15 @@ video {
     box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
     object-fit: contain;
   }
+
+ /* .parallax {
+    background-image: url("https://media-cldnry.s-nbcnews.com/image/upload/t_fit-760w,f_auto,q_auto:best/rockcms/2023-06/Grimace-mcdonalds-mc-230608-731819.jpg");
+    min-height: 50px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }*/
   
   .hero-container > h1 {
     color: #fff;

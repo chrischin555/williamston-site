@@ -5,7 +5,10 @@ import './HeroSection.css';
 
 function HeroSection() {
   return (
+    
     <div className='hero-container'>
+      
+      {/*<div class="parallax"></div>*/}
       <h1>Welcome to Williamston</h1>
       <p>Discover the Charm</p>
       <div className='hero-btns'>
