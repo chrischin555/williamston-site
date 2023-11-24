@@ -64,7 +64,7 @@ const PDFConverter = () => {
             pdfText.forEach(({ text, y }) => {
                 // Ensure that the y-coordinate is a valid number
                 const validY = typeof y === 'number' && !isNaN(y) ? y : 0;
-    
+
                 page.drawText(text, { font, x: position.x, y: position.y - validY, size: fontSize });
             });
 
@@ -86,38 +86,39 @@ const PDFConverter = () => {
     const docxToPdfText = (docxText, fontSize) => {
         const lines = docxText.split('\n');
         const lineHeight = fontSize * 1.5; // Adjust as needed
-    
+
         // Adjust the y-coordinate based on font size and line height
         const adjustedLines = lines.map((line, index) => ({
             text: line,
             y: fontSize + lineHeight * index,
         }));
-    
+
         return adjustedLines;
     };
-    
+
 
 
     return (
-        <div>
+        <div style={{ fontFamily: 'Arial', textAlign: 'center', padding: '20px' }}>
             {/* Add a file input to select a Word document */}
             <input type="file" accept=".docx" onChange={handleFileChange} />
 
-            <button onClick={convertWordToPDF}>Convert to PDF</button>
+            <button style={{ margin: '10px', padding: '10px', backgroundColor: 'blue', color: 'white' }} onClick={convertWordToPDF}>
+                Convert to PDF
+            </button>
 
             {/* Trigger the download of the PDF file */}
             {pdfBytes && (
                 <a
                     href={URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }))}
                     download="converted_document.pdf"
+                    style={{ display: 'block', margin: '20px', textDecoration: 'none', color: 'green' }}
                 >
                     Download PDF
                 </a>
             )}
         </div>
     );
-
-
 };
 
 export default PDFConverter;
