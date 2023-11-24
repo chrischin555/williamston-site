@@ -38,7 +38,7 @@ const PDFConverter = () => {
 
 
             // Get the rendered content as a buffer
-            const renderedBuffer = doc.getZip().generate({ type: 'uint8array' });
+            //const renderedBuffer = doc.getZip().generate({ type: 'uint8array' });
 
             // Assuming A4 dimensions are 595.276 x 841.890 points
             const pageWidth = 595.276;
@@ -50,20 +50,23 @@ const PDFConverter = () => {
 
             // Embed the Helvetica font
             const font = await pdfDoc.embedFont('Helvetica');
+            // Sets font size
+            const fontSize = 12;
 
             // Add the rendered content to the PDF
-            const pdfText = docxToPdfText(doc.getFullText());
+            const pdfText = docxToPdfText(doc.getFullText(), font, fontSize);
             const validPdfText = pdfText || ''; // Ensure pdfText is a string
 
             // Set the position at the top-left corner of the page
-            const position = { x: 50, y: page.getHeight() - 50 }; // Adjust as needed
+            let position = { x: 50, y: page.getHeight() - 50 }; // Adjust as needed
 
-            // Attempt to draw text on the page
-            try {
-                page.drawText(validPdfText, { font, x: position.x, y: position.y });
-            } catch (renderError) {
-                console.error('Error rendering PDF text:', renderError);
-            }
+            // Draw each line of text with appropriate font size and line breaks
+            pdfText.forEach(({ text, y }) => {
+                // Ensure that the y-coordinate is a valid number
+                const validY = typeof y === 'number' && !isNaN(y) ? y : 0;
+    
+                page.drawText(text, { font, x: position.x, y: position.y - validY, size: fontSize });
+            });
 
             // Log the processed PDF text
             console.log('Processed PDF Text:', validPdfText);
@@ -80,16 +83,19 @@ const PDFConverter = () => {
 
 
 
-    const docxToPdfText = (docxText) => {
-        // // Replace line breaks with HTML line breaks
-        // return docxText.replace(/\n/g, '<br>');
-        // Log the input to verify that docxText is not undefined
-        console.log('Input to docxToPdfText:', docxText);
-
-        // Simply return the input for testing
-        return docxText;
+    const docxToPdfText = (docxText, fontSize) => {
+        const lines = docxText.split('\n');
+        const lineHeight = fontSize * 1.5; // Adjust as needed
+    
+        // Adjust the y-coordinate based on font size and line height
+        const adjustedLines = lines.map((line, index) => ({
+            text: line,
+            y: fontSize + lineHeight * index,
+        }));
+    
+        return adjustedLines;
     };
-
+    
 
 
     return (
