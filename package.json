@@ -10,6 +10,8 @@
     "@testing-library/user-event": "^13.5.0",
     "docxtemplater": "^3.42.1",
     "html2pdf.js": "^0.10.1",
+    "image-data-uri": "^2.0.1",
+    "image-js": "^0.35.5",
     "mammoth": "^1.6.0",
     "pdf-lib": "^1.17.1",
     "pizzip": "^3.1.4",

@@ -1,5 +1,3 @@
-// PDFConverter.js
-
 import React, { useState } from 'react';
 import Docxtemplater from 'docxtemplater';
 import PizZip from 'pizzip';
@@ -7,107 +5,86 @@ import { PDFDocument } from 'pdf-lib';
 
 const PDFConverter = () => {
     const [pdfBytes, setPdfBytes] = useState(null);
-    const [wordArrayBuffer, setWordArrayBuffer] = useState(null)
-
+    const [fileArrayBuffer, setFileArrayBuffer] = useState(null);
+    const [isImage, setIsImage] = useState(false);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = (event) => {
-                setWordArrayBuffer(event.target.result);
+                setFileArrayBuffer(event.target.result);
+                // Check if the file is an image
+                setIsImage(file.type.startsWith('image'));
             };
             reader.readAsArrayBuffer(file);
         }
     };
 
-    const convertWordToPDF = async () => {
+    const convertToPDF = async () => {
         try {
-            // Load the Word document
-            const zip = new PizZip(wordArrayBuffer);
-            const doc = new Docxtemplater().loadZip(zip);
+            if (isImage) {
+                // Convert image to PDF
+                const pdfDoc = await PDFDocument.create();
+                const page = pdfDoc.addPage();
+                const { width, height } = page.getSize();
+                const imageBytes = new Uint8Array(fileArrayBuffer);
+                const image = await pdfDoc.embedPng(imageBytes);
+                const imageWidth = width; // Set the desired width of the image
+                const imageHeight = (imageWidth / image.width) * image.height;
+                page.drawImage(image, {
+                    x: 0,
+                    y: height - imageHeight, // Adjust the y-coordinate to position the image at the top
+                    width: imageWidth,
+                    height: imageHeight,
+                });
+                const newPdfBytes = await pdfDoc.save();
+                setPdfBytes(newPdfBytes);
+            } else {
+                // Convert Word document to PDF
+                const zip = new PizZip(fileArrayBuffer);
+                const doc = new Docxtemplater().loadZip(zip);
+                doc.render();
 
+                const pdfDoc = await PDFDocument.create();
+                const page = pdfDoc.addPage();
+                const font = await pdfDoc.embedFont('Helvetica');
+                let pdfText = doc.getFullText();
 
-            // Render the Word document
-            doc.render();
+                // Replace different newline characters with a consistent one
+                pdfText = pdfText.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 
-            // Log the content of the Word document
+                // Set the position at the top of the page
+                const position = { x: 50, y: page.getHeight() - 50 }; // Adjust as needed
 
-            const wordDocumentContent = doc.getFullText();
-            console.log('Word Document Content:', wordDocumentContent);
+                // Set the font size for the text
+                const fontSize = 12; // Adjust as needed
 
+                // Split the text into lines based on newlines
+                const lines = pdfText.split('\n');
 
-            // Get the rendered content as a buffer
-            //const renderedBuffer = doc.getZip().generate({ type: 'uint8array' });
+                // Draw each line of text with appropriate font size and line breaks
+                lines.forEach((line, index) => {
+                    page.drawText(line, { font, x: position.x, y: position.y - index * fontSize, size: fontSize });
+                });
 
-            // Assuming A4 dimensions are 595.276 x 841.890 points
-            const pageWidth = 595.276;
-            const pageHeight = 841.890;
-
-            // Create a PDF document
-            const pdfDoc = await PDFDocument.create();
-            const page = pdfDoc.addPage([pageWidth, pageHeight]);
-
-            // Embed the Helvetica font
-            const font = await pdfDoc.embedFont('Helvetica');
-            // Sets font size
-            const fontSize = 12;
-
-            // Add the rendered content to the PDF
-            const pdfText = docxToPdfText(doc.getFullText(), font, fontSize);
-            const validPdfText = pdfText || ''; // Ensure pdfText is a string
-
-            // Set the position at the top-left corner of the page
-            let position = { x: 50, y: page.getHeight() - 50 }; // Adjust as needed
-
-            // Draw each line of text with appropriate font size and line breaks
-            pdfText.forEach(({ text, y }) => {
-                // Ensure that the y-coordinate is a valid number
-                const validY = typeof y === 'number' && !isNaN(y) ? y : 0;
-
-                page.drawText(text, { font, x: position.x, y: position.y - validY, size: fontSize });
-            });
-
-            // Log the processed PDF text
-            console.log('Processed PDF Text:', validPdfText);
-
-            // Save the PDF as a buffer
-            const pdfBytes = await pdfDoc.save();
-
-            // Set the PDF bytes
-            setPdfBytes(pdfBytes);
+                const newPdfBytes = await pdfDoc.save();
+                setPdfBytes(newPdfBytes);
+            }
         } catch (error) {
-            console.error('Error converting Word to PDF:', error);
+            console.error('Error converting to PDF:', error);
         }
     };
-
-
-
-    const docxToPdfText = (docxText, fontSize) => {
-        const lines = docxText.split('\n');
-        const lineHeight = fontSize * 1.5; // Adjust as needed
-
-        // Adjust the y-coordinate based on font size and line height
-        const adjustedLines = lines.map((line, index) => ({
-            text: line,
-            y: fontSize + lineHeight * index,
-        }));
-
-        return adjustedLines;
-    };
-
-
-
+    
     return (
         <div style={{ fontFamily: 'Arial', textAlign: 'center', padding: '20px' }}>
-            {/* Add a file input to select a Word document */}
-            <input type="file" accept=".docx" onChange={handleFileChange} />
-
-            <button style={{ margin: '10px', padding: '10px', backgroundColor: 'blue', color: 'white' }} onClick={convertWordToPDF}>
+            <input type="file" accept=".docx, .png" onChange={handleFileChange} />
+            <button
+                style={{ margin: '10px', padding: '10px', backgroundColor: 'blue', color: 'white' }}
+                onClick={convertToPDF}
+            >
                 Convert to PDF
             </button>
-
-            {/* Trigger the download of the PDF file */}
             {pdfBytes && (
                 <a
                     href={URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }))}
