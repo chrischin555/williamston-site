@@ -8,7 +8,7 @@ import Departments from './components/pages/Departments';
 import Community from './components/pages/Community';
 import Business from './components/pages/Business';
 import VisitUs from './components/pages/VisitUs';
-import LogIn from './components/pages/LogIn';
+import LogIn from './components/pages/LogIn'; 
 
 function App() {
   return (

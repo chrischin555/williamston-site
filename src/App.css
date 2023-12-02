@@ -42,3 +42,47 @@
     color: #fff;
     font-size: 100px;
   }
+  
+  .pdf-converter-container {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .pdf-converter-input {
+    margin-bottom: 10px;
+  }
+  
+  .pdf-converter-button {
+    padding: 12px 24px !important; /* Adjusted padding for larger buttons */ 
+    border-radius: 8px !important; /* Added border-radius for rounded corners */ 
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: #301c20;
+    color: white;
+    border: 1px solid var(--primary);
+  }
+  
+  .pdf-converter-button:hover {
+    background: #5f474d;
+    color: white;
+    transition: all 0.3s ease-out;
+  }
+  
+  .pdf-download-link {
+    padding: 12px 24px;
+    border-radius: 10px;
+    margin: 20px;
+    text-decoration: none;
+    color: green;
+  }
+  
+  .pdf-download-link:hover {
+    text-decoration: underline;
+  }
+  

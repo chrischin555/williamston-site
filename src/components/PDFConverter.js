@@ -77,25 +77,30 @@ const PDFConverter = () => {
     };
     
     return (
-        <div style={{ fontFamily: 'Arial', textAlign: 'center', padding: '20px' }}>
-            <input type="file" accept=".docx, .png" onChange={handleFileChange} />
-            <button
-                style={{ margin: '10px', padding: '10px', backgroundColor: 'blue', color: 'white' }}
-                onClick={convertToPDF}
-            >
-                Convert to PDF
-            </button>
-            {pdfBytes && (
-                <a
-                    href={URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }))}
-                    download="converted_document.pdf"
-                    style={{ display: 'block', margin: '20px', textDecoration: 'none', color: 'green' }}
-                >
-                    Download PDF
-                </a>
-            )}
-        </div>
-    );
+    <div className="pdf-converter-container">
+      <input
+        type="file"
+        accept=".docx, .png"
+        onChange={handleFileChange}
+        className="pdf-converter-input"
+      />
+      <button
+        onClick={convertToPDF}
+        className="pdf-converter-button"
+      >
+        Convert to PDF
+      </button>
+      {pdfBytes && (
+        <a
+          href={URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }))}
+          download="converted_document.pdf"
+          className="pdf-download-link"
+        >
+          Download PDF
+        </a>
+      )}
+    </div>
+  );
 };
 
 export default PDFConverter;
