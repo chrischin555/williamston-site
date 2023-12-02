@@ -51,6 +51,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #f0bfc8;
   }
   
   .pdf-converter-input {
