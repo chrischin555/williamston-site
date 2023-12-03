@@ -3,6 +3,7 @@ import '../../App.css';
 import HeroSection from '../HeroSection';
 import Cards from '../Cards';
 import PDFConverter from '../PDFConverter';
+import EventCalendar from '../EventCalendar';
 
 
 function Home() {
@@ -12,6 +13,7 @@ function Home() {
       <Cards />
        {/* Use the PDFConverter component */}
        <PDFConverter /> 
+       <EventCalendar />
     </>
   );
 }
